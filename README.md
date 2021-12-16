@@ -6,4 +6,6 @@ Docker course after test
 
 docker-compose up --force-recreate --build
 
-Note: It may fail on first build and execute, so just restart container
+### Note: It may fail on first build and execute, so just restart containerm without build argument
+
+docker-compose up --force-recreate
