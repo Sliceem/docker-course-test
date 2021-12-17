@@ -1,13 +1,40 @@
 pipeline {
     agent any
     stages {
-        stage("test") {
+        stage("build-staging") {
             steps {
                 script {
-                  echo "The build number is ${env.BUILD_NUMBER}"
-                  sh 'echo  Execution date - `date`'
+                    deploy('STAGING')
+                }
+            }
+        }
+        stage('deploy-staging') {
+            steps {
+                script {
+                    deploy('STAGING')
+                }
+            }
+        }
+        stage('test-staging') {
+            steps {
+                script {
+                    test('STAGING')
                 }
             }
         }
     }
+}
+
+def build(String environment) {
+    echo "Build on ${environment} was started"
+    echo "The build number - ${env.BUILD_NUMBER}"
+    sh 'echo  Execution servertime - `date`'
+}
+
+def deploy(String environment) {
+    echo "Deploy started on ${environment}"
+}
+
+def test(String environment) {
+    echo "Test executed on ${environment}"
 }
