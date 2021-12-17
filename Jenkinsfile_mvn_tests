@@ -55,7 +55,7 @@ def build(String environment) {
     env.STAGE_STATUS = 'OK'
 
     sh "docker run mvn_tests -t --rm bash"
-    sh "docker exec mvn_tests -d -t --rm bash send_notification.sh '${environment}' 0"
+    sh "docker exec -d mvn_tests bash send_notification.sh '${environment}' 0"
     sh "docker rm -f mvn_tests"
 }
 
