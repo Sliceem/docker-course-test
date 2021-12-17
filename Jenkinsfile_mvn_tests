@@ -34,7 +34,7 @@ def build(String environment) {
 
 def deploy(String environment) {
     echo "Deploy started on ${environment}"
-    echo ${env.STAGE_STATUS}
+    echo "${env.STAGE_STATUS}"
 }
 
 def test(String environment) {
