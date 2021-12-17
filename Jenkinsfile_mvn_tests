@@ -54,7 +54,8 @@ def build(String environment) {
     sh 'echo  Execution servertime - `date`'
     env.STAGE_STATUS = 'OK'
 
-    sh "docker run -t --entrypoint bash  send_notification.sh '${environment}' 0 --rm mvn_tests"
+    sh "docker run mvn_tests -t --rm"
+    sh "docker exec -d mvn_tests bash send_notification.sh '${environment}' 0"
     sh "docker rm -f mvn_tests"
 }
 
