@@ -53,6 +53,10 @@ def build(String environment) {
     echo "The build number - ${env.BUILD_NUMBER}"
     sh 'echo  Execution servertime - `date`'
     env.STAGE_STATUS = 'OK'
+
+    sh "docker run -it bash --rm mvn_tests"
+    sh "docker exec -it --rm bash send_notification.sh '${environment}' 0"
+    sh "docker rm -f mvn_tests"
 }
 
 def deploy(String environment) {
@@ -68,5 +72,10 @@ def test(String environment) {
         sh "docker-compose up -d --force-recreate"
         sh "docker run -t --rm --network=test-automation-setup mvn_tests mvn clean test -Dbrowser=chrome -X -DgridURL=selenium-hub:4444"
         sh "docker rm -f selenium-hub"
+    }
+    catch (exc) {
+        echo "Failed on  ${environment} environment"
+
+        throw
     }
 }
