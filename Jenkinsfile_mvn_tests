@@ -13,7 +13,6 @@ pipeline {
             steps {
                 script {
                     deploy('STAGING')
-                    echo successJob;
                 }
             }
         }
@@ -24,10 +23,30 @@ pipeline {
                 }
             }
         }
+        stage("build-production)") {
+            steps {
+                script {
+                    successJob = 'false'
+                    build('PRODUCTION')
+                }
+            }
+        }
+        stage('deploy-production)') {
+            steps {
+                script {
+                    deploy('PRODUCTION')
+                }
+            }
+        }
+        stage('test-production)') {
+            steps {
+                script {
+                    test('PRODUCTION')
+                }
+            }
+        }
     }
 }
-
-def successJob = 'true'
 
 def build(String environment) {
     echo "Build on ${environment} was started"
@@ -38,9 +57,12 @@ def build(String environment) {
 
 def deploy(String environment) {
     echo "Deploy started on ${environment}"
+    
     echo "${env.STAGE_STATUS}"
 }
 
 def test(String environment) {
     echo "Test executed on ${environment}"
+
+    sh "docker run -it --network=test-automation-setup mvn_tests mvn clean test -Dbrowser=chrome -X -DgridURL=selenium-hub:4444"
 }
