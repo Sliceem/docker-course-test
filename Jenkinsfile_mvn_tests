@@ -75,7 +75,5 @@ def test(String environment) {
     }
     catch (exc) {
         echo "Failed on  ${environment} environment"
-
-        throw
     }
 }
