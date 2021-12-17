@@ -4,7 +4,8 @@ pipeline {
         stage("test") {
             steps {
                 script {
-                  echo "BUILD_DATE=$(date +%F-%T)"
+                  echo "The build number is ${env.BUILD_NUMBER}"
+                  sh 'echo  Execution date - `date`'
                 }
             }
         }
