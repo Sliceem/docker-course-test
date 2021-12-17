@@ -4,7 +4,8 @@ pipeline {
         stage("build-staging") {
             steps {
                 script {
-                    deploy('STAGING')
+                    successJob = 'false'
+                    build('STAGING')
                 }
             }
         }
@@ -12,6 +13,7 @@ pipeline {
             steps {
                 script {
                     deploy('STAGING')
+                    echo successJob;
                 }
             }
         }
@@ -24,6 +26,8 @@ pipeline {
         }
     }
 }
+
+def successJob = 'true'
 
 def build(String environment) {
     echo "Build on ${environment} was started"
