@@ -57,12 +57,12 @@ def build(String environment) {
 
 def deploy(String environment) {
     echo "Deploy started on ${environment}"
-    
+
     echo "${env.STAGE_STATUS}"
 }
 
 def test(String environment) {
     echo "Test executed on ${environment}"
 
-    sh "docker run -it --network=test-automation-setup mvn_tests mvn clean test -Dbrowser=chrome -X -DgridURL=selenium-hub:4444"
+    sh "docker run -t --network=test-automation-setup mvn_tests mvn clean test -Dbrowser=chrome -X -DgridURL=selenium-hub:4444"
 }
