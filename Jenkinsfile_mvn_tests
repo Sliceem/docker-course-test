@@ -71,7 +71,8 @@ def test(String environment) {
     try {
         sh "docker-compose up -d --force-recreate"
         sh "docker run -t --rm --network=test-automation-setup mvn_tests mvn clean test -Dbrowser=chrome -X -DgridURL=selenium-hub:4444"
-        sh "docker rm -f selenium-hub"
+        sh "docker rm -f selenium-hub" //Faced problems that container already exist
+        sh "docker-compose down"
     }
     catch (exc) {
         echo "Failed on  ${environment} environment"
