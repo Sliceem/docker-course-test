@@ -48,7 +48,7 @@ pipeline {
     }
 }
 
-def sendNotification(String message, Num status = 0) {
+def sendNotification(String message, Integer status = 0) {
     sh "docker run --name mvn_tests -t -d mvn_tests"
     sh "docker exec mvn_tests bash send_notification.sh '${message}' '${status}'"
     sh "docker rm -f mvn_tests"
