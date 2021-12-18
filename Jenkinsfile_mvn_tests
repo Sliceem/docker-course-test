@@ -48,6 +48,12 @@ pipeline {
     }
 }
 
+def sendNotification(String message, Num status = 0) {
+    sh "docker run --name mvn_tests -t -d mvn_tests"
+    sh "docker exec mvn_tests bash send_notification.sh '${message}' '${status}'"
+    sh "docker rm -f mvn_tests"
+}
+
 def build(String environment) {
     echo "Build on ${environment} was started"
     echo "The build number - ${env.BUILD_NUMBER}"
@@ -79,8 +85,3 @@ def test(String environment) {
     }
 }
 
-def sendNotification(String message, Num status = 0) {
-    sh "docker run --name mvn_tests -t -d mvn_tests"
-    sh "docker exec mvn_tests bash send_notification.sh '${message}' '${status}'"
-    sh "docker rm -f mvn_tests"
-}
