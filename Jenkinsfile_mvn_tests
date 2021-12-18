@@ -52,17 +52,15 @@ def build(String environment) {
     echo "Build on ${environment} was started"
     echo "The build number - ${env.BUILD_NUMBER}"
     sh 'echo  Execution servertime - `date`'
-    env.STAGE_STATUS = 'OK'
+    env.STAGE_STATUS = 0
 
-    sh "docker run --name mvn_tests -t -d mvn_tests"
-    sh "docker exec mvn_tests bash send_notification.sh '${environment}' 0"
-    sh "docker rm -f mvn_tests"
+    sendNotification("Build on ${environment} was started", env.STAGE_STATUS)
 }
 
 def deploy(String environment) {
     echo "Deploy started on ${environment}"
 
-    echo "${env.STAGE_STATUS}"
+    sendNotification("Deploy started on ${environment}", env.STAGE_STATUS)
 }
 
 def test(String environment) {
@@ -73,8 +71,16 @@ def test(String environment) {
         sh "docker run -t --rm --network=test-automation-setup mvn_tests mvn clean test -Dbrowser=chrome -X -DgridURL=selenium-hub:4444"
         sh "docker rm -f selenium-hub" //Faced problems that container already exist
         sh "docker-compose down"
+        sendNotification("Deploy started on ${environment}", env.STAGE_STATUS)
     }
     catch (exc) {
         echo "Failed on  ${environment} environment"
+        sendNotification("Deploy started on ${environment}", 1)
     }
+}
+
+def sendNotification(String message, Num status = 0) {
+    sh "docker run --name mvn_tests -t -d mvn_tests"
+    sh "docker exec mvn_tests bash send_notification.sh '${message}' '${status}'"
+    sh "docker rm -f mvn_tests"
 }
