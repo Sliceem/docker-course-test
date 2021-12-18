@@ -60,13 +60,13 @@ def build(String environment) {
     sh 'echo  Execution servertime - `date`'
     env.STAGE_STATUS = 0
 
-    sendNotification("Build on ${environment} was started", env.STAGE_STATUS)
+    sendNotification("Build on ${environment} was started", 0)
 }
 
 def deploy(String environment) {
     echo "Deploy started on ${environment}"
 
-    sendNotification("Deploy started on ${environment}", env.STAGE_STATUS)
+    sendNotification("Deploy started on ${environment}", 0)
 }
 
 def test(String environment) {
