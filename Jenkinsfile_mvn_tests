@@ -81,7 +81,7 @@ def test(String environment) {
     }
     catch (exc) {
         echo "Failed on  ${environment} environment"
-        sendNotification("Deploy started on ${environment}", 1)
+        sendNotification("Test faild on ${environment}", 1)
     }
 }
 
