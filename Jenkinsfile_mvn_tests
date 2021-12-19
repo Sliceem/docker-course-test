@@ -7,7 +7,6 @@ pipeline {
         stage("build-staging") {
             steps {
                 script {
-                    successJob = 'false'
                     build('STAGING')
                 }
             }
@@ -29,7 +28,6 @@ pipeline {
         stage("build-production)") {
             steps {
                 script {
-                    successJob = 'false'
                     build('PRODUCTION')
                 }
             }
