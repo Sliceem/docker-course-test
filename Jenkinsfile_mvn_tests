@@ -48,6 +48,8 @@ pipeline {
     }
 }
 
+def STAGE_STATUS = 0
+
 def sendNotification(String message, Integer status = 0) {
     sh "docker run --name mvn_tests -t -d mvn_tests"
     sh "docker exec mvn_tests bash send_notification.sh '${message}' '${status}'"
@@ -77,7 +79,7 @@ def test(String environment) {
         sh "docker run -t --rm --network=test-automation-setup mvn_tests mvn clean test -Dbrowser=chrome -X -DgridURL=selenium-hub:4444"
         sh "docker rm -f selenium-hub" //Faced problems that container already exist
         sh "docker-compose down"
-        sendNotification("Test started on ${environment}", ${env.STAGE_STATUS})
+        sendNotification("Test started on ${environment}", ${STAGE_STATUS})
     }
     catch (exc) {
         echo "Failed on  ${environment} environment"
